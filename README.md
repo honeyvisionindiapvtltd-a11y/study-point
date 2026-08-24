@@ -28,7 +28,13 @@ For local MongoDB:
 npm run dev
 ```
 
-Frontend: http://localhost:5173  
+Frontend: http://localhost:5173
+
+To run the backend and frontend together, configure `backend/.env` first and use:
+```bash
+npm run dev:full
+```
+
 Backend: http://localhost:5000
 
 ### Demo accounts
