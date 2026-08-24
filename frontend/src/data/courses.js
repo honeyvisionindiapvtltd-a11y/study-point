@@ -1,0 +1,5 @@
+export const demoCourses = [
+ { title:"JEE Foundation", category:"Engineering", level:"Foundation", duration:"12 Months", fee:"₹45,000", image:"https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=900&q=80", description:"Strong concepts, structured practice and regular tests for engineering aspirants." },
+ { title:"NEET Excellence", category:"Medical", level:"Advanced", duration:"12 Months", fee:"₹50,000", image:"https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=80", description:"Focused preparation for medical entrance with concept mastery and tests." },
+ { title:"Board Exam Mastery", category:"School", level:"Class 10–12", duration:"10 Months", fee:"₹28,000", image:"https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80", description:"Complete academic support with notes, doubt solving and mock exams." }
+];
