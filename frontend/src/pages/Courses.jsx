@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Bookmark, Clock3, Users } from "lucide-react";
 import { api } from "../services/api";
-import { demoCourses } from "../data/courses";
+import { catalogCourses, demoCourses } from "../data/courses";
+
+const slugify = title => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 export default function Courses() {
- const [courses,setCourses]=useState(demoCourses);
+ const [courses,setCourses]=useState(catalogCourses);
  useEffect(()=>{api.get("/courses").then(r=>{if(r.data?.length)setCourses(r.data)}).catch(()=>{});},[]);
- return <section className="container-x py-16"><div className="max-w-2xl"><p className="font-semibold text-indigo-600">Our programs</p><h1 className="mt-2 text-4xl font-extrabold">Choose your path to success</h1><p className="mt-4 text-slate-500">Explore structured programs designed around concepts, practice and measurable progress.</p></div><div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{courses.map((c,i)=><article className="card overflow-hidden" key={c._id||c.slug||i}><img className="h-48 w-full object-cover" src={c.image||demoCourses[i%demoCourses.length].image} alt={c.title}/><div className="p-6"><div className="flex justify-between text-xs font-bold uppercase tracking-wide text-indigo-600"><span>{c.category}</span><span>{c.level}</span></div><h2 className="mt-3 text-xl font-bold">{c.title}</h2><p className="mt-2 text-sm leading-6 text-slate-500">{c.description}</p><div className="mt-5 flex items-center justify-between"><span className="font-bold">{c.fee ? `₹${c.fee.toLocaleString?.()||c.fee}` : "Contact us"}</span><Link to="/contact" className="btn-primary px-4 py-2 text-sm">Enquire</Link></div></div></article>)}</div></section>
+ return <>
+  <section className="courses-hero"><div className="container-x flex min-h-36 items-center justify-between gap-8 py-8"><div><div className="mb-4 text-xs font-medium text-slate-500"><Link to="/">Home</Link><span className="mx-2">›</span>Courses</div><h1 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">Our Courses</h1><p className="mt-2 max-w-md text-sm leading-6 text-slate-600">Explore our wide range of courses designed to help you achieve your academic goals and secure your future.</p></div><div className="courses-hero-art" aria-hidden="true">STUDY<br/><span>SMART</span></div></div></section>
+    <main className="container-x courses-results py-8 lg:py-10"><div className="courses-results-head"><div><h2>All Courses</h2><p>Showing all {courses.length} courses</p></div><select aria-label="Sort courses"><option>Sort by: Popular</option><option>Sort by: Duration</option></select></div><div className="courses-grid">{courses.map((c,i)=><article className="course-tile" key={c._id||c.slug||i}><div className="course-image"><img src={c.image||demoCourses[i%demoCourses.length].image} alt={c.title}/><button aria-label={`Bookmark ${c.title}`}><Bookmark size={16}/></button><strong>{i < 3 ? "2026-27 BATCH" : ""}</strong></div><div className="course-tile-body"><span className="course-category">{c.category}</span><h3>{c.title}</h3><div className="course-meta"><span><Users size={13}/>{c.level}</span><span><Clock3 size={13}/>{c.duration}</span></div><div className="rating">★★★★★ <b>{c.rating || "4.8"}</b> ({c.reviews || 120})</div><div className="course-actions"><Link to={`/courses/${c.slug || slugify(c.title)}`} className="details-button">View Details</Link><Link to="/contact" className="enquire-button">Enquire Now</Link></div></div></article>)}</div></main>
+ </>;
 }

@@ -1,7 +1,10 @@
-import { MapPin, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
-import logoImage from "../accests/WhatsApp Image 2026-08-24 at 12.57.19 PM.jpeg";
-
+import { BookOpen, Mail, Phone, MapPin } from "lucide-react";
 export default function Footer() {
-  return <footer className="bg-[#030B24] text-blue-100"><div className="container-x grid gap-12 py-16 md:grid-cols-4"><div className="md:col-span-1"><img src={logoImage} alt="Study Point logo" className="h-14 w-14 rounded-xl object-cover"/><h2 className="mt-5 text-xl font-extrabold text-white">Study Point</h2><p className="mt-3 text-sm leading-6 text-blue-200">Shape Your Future with Study Point.</p></div><div><h3 className="font-bold text-white">Quick links</h3><div className="mt-4 grid gap-3 text-sm"><Link to="/">Home</Link><Link to="/about">About</Link><Link to="/courses">Courses</Link><Link to="/contact">Contact</Link></div></div><div><h3 className="font-bold text-white">Programs</h3><div className="mt-4 grid gap-3 text-sm"><span>VI-VIII</span><span>IX-X</span><span>XI-XII</span><span>JEE · NEET · Foundation</span></div></div><div><h3 className="font-bold text-white">Contact</h3><div className="mt-4 grid gap-3 text-sm"><a className="flex items-center gap-2" href="tel:8280971995"><Phone size={16}/>8280971995</a><a className="flex items-center gap-2" href="tel:8763464066"><Phone size={16}/>8763464066</a><p className="flex gap-2"><MapPin className="shrink-0" size={16}/>Plot No: HIG-87, K-6, Kalinga Vihar, Bhubaneswar</p></div></div></div><div className="border-t border-white/10 py-5 text-center text-sm text-blue-300">© 2026 Study Point. All Rights Reserved.</div></footer>;
+  return <footer className="mt-20 bg-slate-950 text-slate-300">
+    <div className="container-x grid gap-10 py-14 md:grid-cols-4">
+      <div className="md:col-span-2"><div className="mb-4 flex items-center gap-2 text-xl font-extrabold text-white"><span className="grid h-9 w-9 place-items-center rounded-lg bg-indigo-600"><BookOpen size={18}/></span>Study Point</div><p className="max-w-md text-slate-400">A modern learning platform built to help students learn smarter, practice consistently and achieve their goals.</p></div>
+      <div><h4 className="mb-4 font-bold text-white">Quick Links</h4><div className="space-y-2 text-sm"><p>Courses</p><p>About Us</p><p>Faculty</p><p>Contact</p></div></div>
+      <div><h4 className="mb-4 font-bold text-white">Contact</h4><div className="space-y-3 text-sm"><p className="flex gap-2"><Phone size={16}/> +91 98765 43210</p><p className="flex gap-2"><Mail size={16}/> hello@studypoint.com</p><p className="flex gap-2"><MapPin size={16}/> Your City, India</p></div></div>
+    </div><div className="border-t border-slate-800 py-5 text-center text-sm text-slate-500">© {new Date().getFullYear()} Study Point. All rights reserved.</div>
+  </footer>
 }
