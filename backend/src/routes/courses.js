@@ -1,0 +1,10 @@
+import { Router } from "express";
+import { listCourses, getCourse, createCourse, updateCourse, deleteCourse } from "../controllers/courses.js";
+import { protect, adminOnly } from "../middleware/auth.js";
+const r = Router();
+r.get("/", listCourses);
+r.get("/:slug", getCourse);
+r.post("/", protect, adminOnly, createCourse);
+r.put("/:id", protect, adminOnly, updateCourse);
+r.delete("/:id", protect, adminOnly, deleteCourse);
+export default r;
