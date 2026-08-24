@@ -56,6 +56,21 @@ npm start --prefix backend
 
 Set `CLIENT_URL` to the deployed frontend URL.
 
+### GoDaddy frontend-only deployment
+From the repository root, build the frontend:
+```bash
+npm run build
+```
+
+Upload the contents of `frontend/dist/` to the GoDaddy domain's `public_html` folder. The included `.htaccess` keeps React routes working after refresh.
+
+The public pages and local media work without the backend. Login, registration, dashboards, and enquiry submission require the backend to be hosted and reachable. Set `frontend/.env.production` before building if the API is hosted elsewhere:
+```env
+VITE_API_URL=https://api.your-domain.example/api
+```
+
+If the API is served from the same domain through a proxy, leave `VITE_API_URL` unset in production and the frontend will use `/api`.
+
 ## Main API routes
 - POST `/api/auth/register`
 - POST `/api/auth/login`
