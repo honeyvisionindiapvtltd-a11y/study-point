@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -12,6 +13,8 @@ import {
   Star,
   TrendingUp,
   Users,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 // Your real images
@@ -19,6 +22,11 @@ import image1 from "../accests/WhatsApp Image 2026-08-24 at 12.57.04 PM.jpeg";
 import image2 from "../accests/WhatsApp Image 2026-08-24 at 12.57.05 PM.jpeg";
 import image3 from "../accests/WhatsApp Image 2026-08-24 at 12.57.05 PM (1).jpeg";
 import image4 from "../accests/WhatsApp Image 2026-08-24 at 12.57.05 PM.jpeg";
+import image5 from "../accests/A1.png";
+import image6 from "../accests/A2.png";
+import image7 from "../accests/A3.png";
+import image8 from "../accests/A4.png";
+
 
 // Your videos
 import heroVideo from "../accests/AI_Video_Generator_Prompt_Veo.mp4";
@@ -37,13 +45,34 @@ const programs = [
     subtitle: "Structured Learning",
     description:
       "Focused preparation with concept clarity, revision plans and regular assessments.",
-    image: image2,
+    image: image6,
   },
   {
     title: "ICSE & CHSE",
     subtitle: "Academic Excellence",
     description:
       "Detailed subject guidance designed to help students learn with confidence.",
+    image: image8,
+  },
+  {
+    title: "JEE Main & Advanced",
+    subtitle: "Engineering Preparation",
+    description:
+      "Concept-first preparation with problem-solving practice, test series and expert guidance.",
+    image: image5,
+  },
+  {
+    title: "NEET Preparation",
+    subtitle: "Medical Preparation",
+    description:
+      "Focused preparation with strong concepts, regular practice and exam-ready assessments.",
+    image: image7,
+  },
+  {
+    title: "Foundation Course",
+    subtitle: "Classes VI–X",
+    description:
+      "Build strong fundamentals and confidence for future academic success through guided learning.",
     image: image3,
   },
 ];
@@ -75,6 +104,39 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const heroVideoRef = useRef(null);
+  const [isHeroVideoMuted, setIsHeroVideoMuted] = useState(false);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+
+    if (!video) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(video);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleHeroVideoSound = () => {
+    const video = heroVideoRef.current;
+
+    if (!video) return;
+
+    video.muted = !video.muted;
+    setIsHeroVideoMuted(video.muted);
+  };
+
   return (
     <main className="overflow-hidden bg-slate-50">
       {/* =====================================================
@@ -165,8 +227,9 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-3 shadow-2xl backdrop-blur-xl">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-slate-900 sm:aspect-[16/12]">
                 <video
+                  ref={heroVideoRef}
                   autoPlay
-                  muted
+                  muted={isHeroVideoMuted}
                   loop
                   playsInline
                   className="h-full w-full object-cover"
@@ -175,6 +238,16 @@ export default function Home() {
                 </video>
 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050b1d]/80 via-transparent to-transparent" />
+
+                <button
+                  type="button"
+                  onClick={toggleHeroVideoSound}
+                  aria-label={isHeroVideoMuted ? "Turn sound on" : "Mute video"}
+                  title={isHeroVideoMuted ? "Turn sound on" : "Mute video"}
+                  className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-[#071126]/75 text-white shadow-lg backdrop-blur-xl transition hover:scale-105 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white/80"
+                >
+                  {isHeroVideoMuted ? <VolumeX size={19} /> : <Volume2 size={19} />}
+                </button>
 
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-[#071126]/75 px-4 py-2 text-sm backdrop-blur-xl">
@@ -236,19 +309,19 @@ export default function Home() {
       {/* =====================================================
           3. WHY STUDY POINT
       ====================================================== */}
-      <section className="container-x py-24 lg:py-32">
-        <div className="grid items-center gap-14 lg:grid-cols-2">
+      <section className="container-x py-20 sm:py-24 lg:py-32">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-14">
           {/* Images */}
-          <div className="relative">
+          <div className="relative pb-8 sm:pb-10 md:pb-12">
             <div className="overflow-hidden rounded-[2rem] shadow-2xl">
               <img
                 src={image1}
                 alt="Students learning at Study Point"
-                className="h-[500px] w-full object-cover"
+                className="aspect-video h-auto w-full object-contain"
               />
             </div>
 
-            <div className="absolute -bottom-8 -right-3 hidden w-52 overflow-hidden rounded-2xl border-8 border-slate-50 shadow-2xl md:block">
+            <div className="absolute bottom-0 right-0 hidden w-44 overflow-hidden rounded-2xl border-8 border-slate-50 shadow-2xl sm:block md:w-52">
               <img
                 src={image2}
                 alt="Study Point classroom"
@@ -340,43 +413,38 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-7 md:grid-cols-3">
+          <div className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
             {programs.map((program, index) => (
               <article
                 key={program.title}
-                className="group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative aspect-video overflow-hidden bg-slate-100">
                   <img
                     src={program.image}
                     alt={program.title}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                    className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-
-                  <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-indigo-700 backdrop-blur">
+                  <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-indigo-700 shadow-sm">
                     0{index + 1}
                   </span>
-
-                  <div className="absolute bottom-5 left-5">
-                    <p className="text-sm font-semibold text-indigo-200">
-                      {program.subtitle}
-                    </p>
-                    <h3 className="mt-1 text-2xl font-bold text-white">
-                      {program.title}
-                    </h3>
-                  </div>
                 </div>
 
-                <div className="p-6">
-                  <p className="leading-7 text-slate-600">
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-sm font-semibold text-indigo-600">
+                    {program.subtitle}
+                  </p>
+                  <h3 className="mt-1 text-2xl font-bold text-slate-900">
+                    {program.title}
+                  </h3>
+                  <p className="mt-3 leading-7 text-slate-600">
                     {program.description}
                   </p>
 
                   <Link
                     to="/courses"
-                    className="mt-6 inline-flex items-center gap-2 font-bold text-indigo-600 transition hover:gap-3"
+                    className="mt-auto pt-6 inline-flex items-center gap-2 font-bold text-indigo-600 transition hover:gap-3"
                   >
                     Explore program
                     <ArrowRight size={17} />
