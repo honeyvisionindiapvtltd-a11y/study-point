@@ -1,0 +1,13 @@
+import { useEffect, useState } from "react";
+import DashboardLayout from "../layouts/DashboardLayout";
+import { api } from "../services/api";
+
+const blank = { name: "", email: "", password: "", phone: "" };
+export default function AdminTeachers() {
+  const [teachers, setTeachers] = useState([]); const [form, setForm] = useState(blank); const [error, setError] = useState(""); const [message, setMessage] = useState("");
+  const load = () => api.get("/admin/teachers").then(r => setTeachers(r.data));
+  useEffect(() => { load().catch(() => setError("Unable to load teachers")); }, []);
+  const create = async event => { event.preventDefault(); setError(""); setMessage(""); try { await api.post("/admin/teachers", form); setForm(blank); setMessage("Teacher created."); load(); } catch (err) { setError(err.response?.data?.message || "Unable to create teacher"); } };
+  const toggle = async teacher => { try { await api.patch(`/admin/teachers/${teacher.id}/status`, { isActive: !teacher.isActive }); load(); } catch (err) { setError(err.response?.data?.message || "Unable to update teacher"); } };
+  return <DashboardLayout admin><div className="mb-8"><p className="text-sm text-slate-500">Administration</p><h1 className="text-3xl font-extrabold">Teachers</h1></div><div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]"><div className="card overflow-hidden"><div className="border-b p-5"><h2 className="font-bold">Teacher accounts</h2></div><div className="divide-y">{teachers.map(teacher => <div className="flex items-center justify-between gap-4 p-5" key={teacher.id}><div><p className="font-semibold">{teacher.name}</p><p className="text-sm text-slate-500">{teacher.email}</p></div><button onClick={() => toggle(teacher)} className="text-sm font-semibold text-indigo-600">{teacher.isActive ? "Deactivate" : "Activate"}</button></div>)}{!teachers.length && <p className="p-5 text-sm text-slate-500">No teachers created yet.</p>}</div></div><form onSubmit={create} className="card space-y-4 p-5"><h2 className="font-bold">Create teacher</h2>{[["name","Name"],["email","Email"],["phone","Phone"],["password","Temporary password"]].map(([key,label])=><label className="block text-sm font-semibold" key={key}>{label}<input required={key !== "phone"} type={key === "password" ? "password" : "text"} value={form[key]} onChange={event => setForm({ ...form, [key]: event.target.value })} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3"/></label>)}{error && <p className="text-sm text-red-600">{error}</p>}{message && <p className="text-sm text-green-600">{message}</p>}<button className="btn-primary w-full">Create teacher</button></form></div></DashboardLayout>;
+}

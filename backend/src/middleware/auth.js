@@ -7,15 +7,25 @@ export async function protect(req, res, next) {
     if (!header.startsWith("Bearer ")) return res.status(401).json({ message: "Authentication required" });
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select("-password");
+    req.user = await User.findById(decoded.id);
     if (!req.user) return res.status(401).json({ message: "User not found" });
+    if (req.user.isActive === false) return res.status(401).json({ message: "Account is inactive. Please contact the administrator." });
     next();
   } catch {
     res.status(401).json({ message: "Invalid or expired token" });
   }
 }
 
-export function adminOnly(req, res, next) {
-  if (req.user?.role !== "admin") return res.status(403).json({ message: "Admin access required" });
-  next();
+export function authorizeRoles(...roles) {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ message: "Authentication required" });
+    if (!roles.includes(req.user.role)) return res.status(403).json({ message: "You do not have permission to perform this action" });
+    next();
+  };
 }
+
+export const adminOnly = authorizeRoles("admin");
+export const teacherOnly = authorizeRoles("teacher");
+export const studentOnly = authorizeRoles("student");
+export const teacherOrAdmin = authorizeRoles("teacher", "admin");
+export const studentOrTeacher = authorizeRoles("student", "teacher");
