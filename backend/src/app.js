@@ -12,7 +12,19 @@ import adminRoutes from "./routes/admin.js";
 const app = express();
 app.set("trust proxy", 1);
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL?.split(",").map(x => x.trim()) || "http://localhost:5173" }));
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
+  .split(",")
+  .map(origin => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) return callback(null, true);
+    return callback(new Error("Origin is not allowed by CORS"));
+  },
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.options("/api/*splat", cors());
 app.use(express.json({ limit: "2mb" }));
 app.use(morgan("dev"));
 app.use("/api", rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
