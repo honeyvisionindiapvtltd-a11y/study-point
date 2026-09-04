@@ -1,0 +1,12 @@
+import { Router } from "express";
+import rateLimit from "express-rate-limit";
+import { register, login, me, logout, updateProfile } from "../controllers/auth.js";
+import { protect } from "../middleware/auth.js";
+const r = Router();
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 30, message: { success: false, message: "Too many authentication attempts. Please try again later." } });
+r.post("/register", authLimiter, register);
+r.post("/login", authLimiter, login);
+r.get("/me", protect, me);
+r.post("/logout", protect, logout);
+r.put("/me", protect, updateProfile);
+export default r;

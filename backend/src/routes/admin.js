@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { stats, listTeachers, getTeacher, createTeacher, updateTeacher, setTeacherStatus, deleteTeacher } from "../controllers/admin.js";
+import { protect, adminOnly } from "../middleware/auth.js";
+const r = Router();
+r.get("/stats", protect, adminOnly, stats);
+r.get("/teachers", protect, adminOnly, listTeachers);
+r.post("/teachers", protect, adminOnly, createTeacher);
+r.get("/teachers/:id", protect, adminOnly, getTeacher);
+r.put("/teachers/:id", protect, adminOnly, updateTeacher);
+r.patch("/teachers/:id/status", protect, adminOnly, setTeacherStatus);
+r.delete("/teachers/:id", protect, adminOnly, deleteTeacher);
+export default r;
