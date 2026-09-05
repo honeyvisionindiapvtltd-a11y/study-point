@@ -31,5 +31,7 @@ services:
         value: deeptimayeep348@gmail.com
       - key: RESEND_API_KEY
         sync: false
+      - key: EMAIL_PROVIDER
+        value: resend
       - key: RESEND_FROM
         value: Study Point <onboarding@resend.dev>

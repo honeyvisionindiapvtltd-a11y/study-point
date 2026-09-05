@@ -3,7 +3,10 @@ import nodemailer from "nodemailer";
 const recipient = process.env.ENQUIRY_RECIPIENT || "studypointbbsr@gmail.com";
 
 async function sendWithResend(message) {
-  if (!process.env.RESEND_API_KEY) return false;
+  if (!process.env.RESEND_API_KEY) {
+    if (process.env.EMAIL_PROVIDER === "resend") throw new Error("RESEND_API_KEY is missing");
+    return false;
+  }
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -70,6 +73,8 @@ export async function sendEnquiryNotification(enquiry) {
 
   const message = { replyTo: enquiry.email, subject, text, html };
   if (await sendWithResend(message)) return { sent: true, configured: true, provider: "resend" };
+
+  if (process.env.EMAIL_PROVIDER === "resend") return { sent: false, configured: false, provider: "resend" };
 
   const transporters = getTransporters();
   if (!transporters.length) return { sent: false, configured: false };
