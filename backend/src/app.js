@@ -12,8 +12,11 @@ import adminRoutes from "./routes/admin.js";
 const app = express();
 app.set("trust proxy", 1);
 app.use(helmet());
-const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
-  .split(",")
+const allowedOrigins = [
+  ...(process.env.CLIENT_URL || "http://localhost:5173").split(","),
+  "https://studypointbbsr.in",
+  "https://www.studypointbbsr.in"
+]
   .map(origin => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
 app.use(cors({

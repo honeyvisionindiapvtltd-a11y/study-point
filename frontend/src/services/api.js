@@ -1,5 +1,7 @@
 import axios from "axios";
-const baseURL = import.meta.env.VITE_API_URL || "/api";
+const productionApiUrl = "https://study-point-yy0v.onrender.com/api";
+const isProductionSite = typeof window !== "undefined" && ["studypointbbsr.in", "www.studypointbbsr.in"].includes(window.location.hostname);
+const baseURL = isProductionSite ? productionApiUrl : (import.meta.env.VITE_API_URL || "/api");
 export const api = axios.create({ baseURL });
 api.interceptors.request.use(config => {
   const token = localStorage.getItem("study_point_token");
