@@ -19,14 +19,11 @@ export async function createEnquiry(req, res) {
     message: typeof message === "string" ? message.trim() : ""
   });
 
-  let emailSent = false;
-  try {
-    emailSent = (await sendEnquiryNotification(enquiry)).sent;
-  } catch (error) {
-    console.error("Unable to send enquiry notification:", error);
-  }
+  sendEnquiryNotification(enquiry)
+    .then(result => console.log(`Enquiry ${enquiry._id} email sent: ${result.sent}`))
+    .catch(error => console.error("Unable to send enquiry notification:", error));
 
-  res.status(201).json({ success: true, enquiry, emailSent });
+  res.status(201).json({ success: true, enquiry, emailQueued: true });
 }
 export async function listEnquiries(req, res) {
   res.json(await Enquiry.find().sort({ createdAt: -1 }));
