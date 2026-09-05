@@ -165,7 +165,7 @@ export default function Home() {
 
         <div className="container-x relative z-10 grid min-h-[760px] items-center gap-14 py-24 lg:grid-cols-[1.05fr_0.95fr]">
           {/* Hero content */}
-          <div className="max-w-3xl">
+          <div className="home-hero-copy max-w-3xl">
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-200">
               <Sparkles size={15} />
               Admissions Open for 2026–27
@@ -232,7 +232,7 @@ export default function Home() {
           </div>
 
           {/* Hero video */}
-          <div className="relative mx-auto w-full max-w-xl">
+          <div className="home-hero-visual relative mx-auto w-full max-w-xl">
             <div className="absolute -left-6 -top-6 h-28 w-28 rounded-full border border-indigo-300/20" />
             <div className="absolute -bottom-10 -right-10 h-44 w-44 rounded-full bg-indigo-500/20 blur-3xl" />
 
@@ -367,7 +367,7 @@ export default function Home() {
               confidence.
             </p>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <div className="home-features mt-8 grid gap-4 sm:grid-cols-2">
               {reasons.map((reason) => (
                 <div
                   key={reason}
@@ -429,7 +429,7 @@ export default function Home() {
             {programs.map((program, index) => (
               <article
                 key={program.title}
-                className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="home-course-card group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
               >
                 <div className="relative aspect-video overflow-hidden bg-slate-100">
                   <img
@@ -488,7 +488,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
+          <div className="home-journey mt-16 grid gap-8 md:grid-cols-3">
             {[
               {
                 number: "01",
@@ -517,7 +517,7 @@ export default function Home() {
               return (
                 <div
                   key={step.number}
-                  className="relative rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur"
+                  className="home-journey-card relative rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-8 backdrop-blur"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-indigo-300">
@@ -560,7 +560,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mt-14 grid auto-rows-[180px] gap-5 md:grid-cols-12">
+        <div className="home-gallery mt-14 grid auto-rows-[180px] gap-5 md:grid-cols-12">
           <div className="overflow-hidden rounded-[1.5rem] md:col-span-7 md:row-span-2">
             <img
               src={image1}
@@ -676,7 +676,7 @@ export default function Home() {
           {testimonials.map((testimonial) => (
             <article
               key={testimonial.name}
-              className="rounded-[1.5rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              className="home-testimonial rounded-[1.5rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
             >
               <Quote className="text-indigo-200" size={40} fill="currentColor" />
 
@@ -701,7 +701,7 @@ export default function Home() {
           9. FINAL ADMISSION CTA
       ====================================================== */}
       <section className="container-x pb-24 lg:pb-32">
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-indigo-600 to-violet-700 px-7 py-14 text-white shadow-2xl sm:px-12 lg:px-16 lg:py-20">
+        <div className="home-cta relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-600 via-indigo-600 to-violet-700 px-7 py-14 text-white shadow-2xl sm:px-12 lg:px-16 lg:py-20">
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border-[40px] border-white/10" />
           <div className="absolute -bottom-32 left-1/2 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
