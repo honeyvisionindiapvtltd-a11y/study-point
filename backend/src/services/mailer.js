@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const recipient = "studypointbbsr@gmail.com";
+const recipient = process.env.ENQUIRY_RECIPIENT || "studypointbbsr@gmail.com";
 
 function getTransporter() {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;

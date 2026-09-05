@@ -22,8 +22,10 @@ services:
       - key: SMTP_SECURE
         value: "true"
       - key: SMTP_USER
-        value: studypointbbsr@gmail.com
+        value: deeptimayeep348@gmail.com
       - key: SMTP_PASS
         sync: false
       - key: SMTP_FROM
-        value: studypointbbsr@gmail.com
+        value: deeptimayeep348@gmail.com
+      - key: ENQUIRY_RECIPIENT
+        value: deeptimayeep348@gmail.com
