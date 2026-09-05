@@ -105,17 +105,22 @@ const testimonials = [
 
 export default function Home() {
   const heroVideoRef = useRef(null);
-  const [isHeroVideoMuted, setIsHeroVideoMuted] = useState(false);
+  const [isHeroVideoMuted, setIsHeroVideoMuted] = useState(true);
 
   useEffect(() => {
     const video = heroVideoRef.current;
 
     if (!video) return undefined;
 
+    video.muted = true;
+    const startVideo = () => {
+      video.play().catch(() => {});
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.play().catch(() => {});
+          startVideo();
         } else {
           video.pause();
         }
@@ -123,9 +128,16 @@ export default function Home() {
       { threshold: 0.25 },
     );
 
+    video.addEventListener("loadedmetadata", startVideo);
+    video.addEventListener("canplay", startVideo);
     observer.observe(video);
+    startVideo();
 
-    return () => observer.disconnect();
+    return () => {
+      video.removeEventListener("loadedmetadata", startVideo);
+      video.removeEventListener("canplay", startVideo);
+      observer.disconnect();
+    };
   }, []);
 
   const toggleHeroVideoSound = () => {
