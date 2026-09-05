@@ -6,13 +6,13 @@ function getTransporter() {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) return null;
   return nodemailer.createTransport({
-    host: SMTP_HOST,
+    host: SMTP_HOST.trim(),
     port: Number(SMTP_PORT),
     secure: String(SMTP_SECURE).toLowerCase() === "true",
     connectionTimeout: 10000,
     greetingTimeout: 10000,
     socketTimeout: 10000,
-    auth: { user: SMTP_USER, pass: SMTP_PASS }
+    auth: { user: SMTP_USER.trim(), pass: SMTP_PASS.replace(/\s/g, "") }
   });
 }
 
@@ -41,7 +41,7 @@ export async function sendEnquiryNotification(enquiry) {
   const html = `<h2>New Study Point enquiry</h2><p><strong>Name:</strong> ${escapeHtml(enquiry.name)}</p><p><strong>Email:</strong> ${escapeHtml(enquiry.email)}</p><p><strong>Phone:</strong> ${escapeHtml(enquiry.phone || "Not provided")}</p><p><strong>Course:</strong> ${escapeHtml(enquiry.course || "Not provided")}</p><p><strong>Message:</strong><br>${escapeHtml(enquiry.message || "Not provided").replace(/\n/g, "<br>")}</p>`;
 
   await transporter.sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    from: (process.env.SMTP_FROM || process.env.SMTP_USER).trim(),
     to: recipient,
     replyTo: enquiry.email,
     subject,
