@@ -29,3 +29,7 @@ services:
         value: deeptimayeep348@gmail.com
       - key: ENQUIRY_RECIPIENT
         value: deeptimayeep348@gmail.com
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM
+        value: Study Point <onboarding@resend.dev>
