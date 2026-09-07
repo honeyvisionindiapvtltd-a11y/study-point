@@ -5,10 +5,16 @@ function validEmail(email) {
   return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
+function validPhone(phone) {
+  if (typeof phone !== "string") return false;
+  const value = phone.trim();
+  return /^[6-9]\d{9}$/.test(value) && !/^(\d)\1{9}$/.test(value);
+}
+
 export async function createEnquiry(req, res) {
   const { name, email, phone, course, message } = req.body;
-  if (typeof name !== "string" || !name.trim() || !validEmail(email) || typeof phone !== "string" || !phone.trim()) {
-    return res.status(422).json({ success: false, message: "A valid name, email, and contact number are required" });
+  if (typeof name !== "string" || !name.trim() || !validEmail(email) || !validPhone(phone)) {
+    return res.status(422).json({ success: false, message: "Enter a valid 10-digit mobile number" });
   }
 
   const enquiry = await Enquiry.create({
