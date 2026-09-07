@@ -7,8 +7,8 @@ function validEmail(email) {
 
 export async function createEnquiry(req, res) {
   const { name, email, phone, course, message } = req.body;
-  if (typeof name !== "string" || !name.trim() || !validEmail(email)) {
-    return res.status(422).json({ success: false, message: "A valid name and email are required" });
+  if (typeof name !== "string" || !name.trim() || !validEmail(email) || typeof phone !== "string" || !phone.trim()) {
+    return res.status(422).json({ success: false, message: "A valid name, email, and contact number are required" });
   }
 
   const enquiry = await Enquiry.create({
